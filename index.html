@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MNC Record Management System</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <section id="loginSection" class="auth-card">
+      <div class="brand-block">
+        <h1>MNC Record Management System</h1>
+        <p>Secure employee record access for admin and user roles.</p>
+      </div>
+
+      <form id="loginForm" class="login-form">
+        <label>
+          Username
+          <input type="text" id="username" placeholder="Enter username" required />
+        </label>
+
+        <label>
+          Password
+          <input type="password" id="password" placeholder="Enter password" required />
+        </label>
+
+        <button type="submit">Login</button>
+        <p id="loginMessage" class="message"></p>
+      </form>
+
+      <div class="credential-box">
+        <strong>Demo Credentials</strong>
+        <p>Admin: admin / admin123</p>
+        <p>User: user / user123</p>
+      </div>
+    </section>
+
+    <section id="dashboardSection" class="dashboard hidden">
+      <header class="topbar">
+        <div>
+          <h2>Employee Management Dashboard</h2>
+          <p id="welcomeText">Welcome</p>
+        </div>
+        <button id="logoutBtn" class="secondary-btn">Logout</button>
+      </header>
+
+      <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="recordsTab">Records</button>
+        <button id="attendanceTabButton" class="tab-btn" data-tab="attendanceTab" data-admin-only>Attendance</button>
+      </nav>
+
+      <section id="recordsTab" class="tab-panel active">
+        <div class="grid-layout">
+          <div class="panel">
+            <h3>Add / Update Employee</h3>
+            <form id="recordForm" class="record-form">
+              <input type="hidden" id="recordId" />
+              <div class="form-grid">
+                <label>Employee ID <input type="text" id="employeeId" required /></label>
+                <label>Age <input type="number" id="age" min="18" required /></label>
+                <label>Name <input type="text" id="name" required /></label>
+                <label>Department <input type="text" id="department" required /></label>
+                <label>Salary <input type="number" id="salary" min="0" required /></label>
+                <label>Contact No <input type="tel" id="contactNo" required /></label>
+                <label class="full-width">Address <textarea id="address" required></textarea></label>
+              </div>
+              <div class="actions-row">
+                <button type="submit" id="saveBtn">Save Record</button>
+                <button type="button" id="resetBtn" class="secondary-btn">Clear</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="panel">
+            <div class="search-row">
+              <h3>Search Records</h3>
+              <input type="text" id="searchInput" placeholder="Search by name, department, ID..." />
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Dept</th>
+                    <th>Salary</th>
+                    <th>Contact</th>
+                    <th>Address</th>
+                    <th>Admin</th>
+                  </tr>
+                </thead>
+                <tbody id="recordsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="attendanceTab" class="tab-panel hidden">
+        <div class="panel attendance-panel">
+          <h3>Attendance Management</h3>
+          <div class="attendance-controls" data-admin-only>
+            <select id="attendanceEmployeeSelect"></select>
+            <select id="attendanceStatusSelect">
+              <option value="Present">Present</option>
+              <option value="Absent">Absent</option>
+              <option value="Late">Late</option>
+            </select>
+            <button id="markAttendanceBtn" class="secondary-btn">Mark Attendance</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Employee ID</th>
+                  <th>Name</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="attendanceTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+emp-104|21|aaakash|hr|500000.0|7439743974397|sadsagdsdgdas
+EMP-101|49|Aarav Sharma|HR|42000.0|9876543210|Jaipur
+EMP-1000|31|Aman Patel|Sales|55000.0|7777777777|Ahmedabad
+EMP-105|21|arnav|hr|899000.0|8787878787|gugsuaugisgi
+EMP-102|32|Sneha Verma|Engineering|65000.0|9988776655|Delhi
+EMP-955|30|Test User|QA|50000.0|99999999980|Mumbai
+EMP-999|30|Test User|QA|50000.0|9999999999|Mumbai
+EMP-998|27|Zoya Khan|Finance|48000.0|8888888888|Bhopal
