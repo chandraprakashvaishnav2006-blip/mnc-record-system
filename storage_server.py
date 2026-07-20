@@ -1,6 +1,7 @@
 import json
 import mimetypes
 import os
+from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 RECORDS_FILE = "employee_records.txt"
@@ -79,14 +80,22 @@ def load_attendance():
                 continue
             parts = line.split("|")
             if len(parts) >= 2:
-                attendance[parts[0]] = parts[1]
+                employee_id = parts[0]
+                status = parts[1]
+                timestamp = parts[2] if len(parts) >= 3 else ""
+                attendance[employee_id] = {
+                    "status": status,
+                    "timestamp": timestamp,
+                }
     return attendance
 
 
 def save_attendance(attendance):
     with open(ATTENDANCE_FILE, "w", encoding="utf-8") as f:
-        for employee_id, status in attendance.items():
-            f.write(f"{employee_id}|{status}\n")
+        for employee_id, entry in attendance.items():
+            status = entry.get("status", "Unknown") if isinstance(entry, dict) else entry
+            timestamp = entry.get("timestamp", "") if isinstance(entry, dict) else ""
+            f.write(f"{employee_id}|{status}|{timestamp}\n")
 
 
 class RequestHandler(BaseHTTPRequestHandler):
@@ -138,7 +147,10 @@ class RequestHandler(BaseHTTPRequestHandler):
         if self.path == "/api/attendance":
             payload = self.read_json_body()
             attendance = load_attendance()
-            attendance[payload["employeeId"]] = payload["status"]
+            attendance[payload["employeeId"]] = {
+                "status": payload["status"],
+                "timestamp": payload.get("timestamp") or datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            }
             save_attendance(attendance)
             self.send_json(200, {"status": "ok", "attendance": attendance})
             return

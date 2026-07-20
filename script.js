@@ -42,7 +42,14 @@ async function loadRecords() {
 async function loadAttendance() {
   const response = await fetch('/api/attendance');
   const data = await response.json();
-  attendance = data;
+  attendance = Object.fromEntries(
+    Object.entries(data).map(([employeeId, value]) => {
+      if (typeof value === 'string') {
+        return [employeeId, { status: value, timestamp: '' }];
+      }
+      return [employeeId, value];
+    })
+  );
   renderAttendance();
 }
 
@@ -70,6 +77,7 @@ async function persistAttendance() {
     body: JSON.stringify({
       employeeId: attendanceEmployeeSelect.value,
       status: attendanceStatusSelect.value,
+      timestamp: new Date().toLocaleString(),
     }),
   });
   await loadAttendance();
@@ -243,15 +251,19 @@ function renderAttendance() {
     attendanceEmployeeSelect.appendChild(option);
   });
 
-  const attendanceRows = Object.entries(attendance).map(([id, status]) => {
+  const attendanceRows = Object.entries(attendance).map(([id, entry]) => {
     const employee = records.find((record) => record.id === id);
     if (!employee) return null;
+
+    const status = typeof entry === 'string' ? entry : entry?.status || 'Unknown';
+    const timestamp = typeof entry === 'string' ? '' : entry?.timestamp || 'No timestamp';
 
     return `
       <tr>
         <td>${employee.employeeId}</td>
         <td>${employee.name}</td>
         <td>${status}</td>
+        <td>${timestamp}</td>
       </tr>
     `;
   }).filter(Boolean);
